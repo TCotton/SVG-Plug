@@ -1,1 +1,27 @@
-DESCRIPTION HERE
+There are various methods of dealing with browsers that can't handle inline SVG
+
+One solution is to place the image within the object tag like so:
+
+ <object data="images/h/elegant-small.svg" type="image/svg+xml"  width="224" height="125" title="Elegant Alert screen shot" >
+ <img src="images/h/elegant-small.svg" width="224" height="125" alt="Elegant Alert screen shot" />
+      </object>
+	  
+That's fine, it works in that the legacy browsers will display the image instead of the blank space where the SVG should be; but the browsers with SVG support download both the SVG and the image.
+
+Another option is to use conditional comments so as to target Internet Explorer 8 and below but that excludes browsers such as Android that don't yet have SVG support
+
+A third option would be to use the polyfill SVG Web [http://code.google.com/p/svgweb/] which creates a fall-back via Flash.
+
+One option that I have been working on is to swap images for the SVG in browsers with no native support.
+
+The method works like this:
+
+1. Create two folders, one for SVG and the other images
+
+2. Embed SVG into the HTML with the object tag
+
+3. Use a server-side script to run through the contents of the image directory and create a JSON file
+
+4. Use client-side script to loop through all DOM nodes to find the SVG objects and loop through JSON file to see if there is a comparable image file. The script also takes the existing attributes of the object and uses it for the new image node.
+
+The only hiccup is that both the SVG and image file has to have the same name and if there are two identically named image files (andy-image.png and andy-image.jpg) then the wrong image may be used instead.
