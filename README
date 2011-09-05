@@ -12,7 +12,7 @@ Another option is to use conditional comments so as to target Internet Explorer 
 
 A third option would be to use the polyfill SVG Web [http://code.google.com/p/svgweb/] which creates a fall-back via Flash.
 
-One option that I have been working on is to swap images for the SVG in browsers with no native support.
+One aolution that I have been working on is to swap images for the SVG in browsers with no native support.
 
 The method works like this:
 
@@ -25,3 +25,5 @@ The method works like this:
 4. Use client-side script to loop through all DOM nodes to find the SVG objects and loop through JSON file to see if there is a comparable image file. The script also takes the existing attributes of the object and uses it for the new image node.
 
 The only hiccup is that both the SVG and image file has to have the same name and if there are two identically named image files (andy-image.png and andy-image.jpg) then the wrong image may be used instead.
+
+To use the SVG Plug just call the JavaSript class with SVG.ImgReplace.init();
