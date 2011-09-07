@@ -1,132 +1,131 @@
 var SVG = {};
 
-	SVG.ImgReplace = (function () {
-	    //private attributes
-	    var $objX, $jsonData, $y, $len, $key, $bodyChildren, $x, $svgObject, $newImg, $root, $newParent, $result;
-		
-	    // private methods
-	    function getJSON() {
-	        // getJSON uses standard AJAX techniques to snatch and parse JSON file created by service side script
-	        $objX = new XMLHttpRequest();
+SVG.ImgReplace = (function () {
+    //private attributes
+    var _objX, _jsonData, _y, _len, _key, _bodyChildren, _x, _svgObject, _newImg, _root, _newParent, _result;
 
-	        if ($objX !== null) {
+    // private methods
 
-	            $objX.open("GET", "json/low-resulution-images.json", true);
+    function _getJSON() {
+        // getJSON uses standard AJAX techniques to snatch and parse JSON file created by service side script
+        _objX = new XMLHttpRequest();
 
-	            $objX.onreadystatechange = function () {
+        if (_objX !== null) {
 
-	                //if readyState is not 4 or or status not 200 then there is a problem that needs attending
-	                if ($objX.readyState === 4) {
-	                    if ($objX.status === 200) {
+            _objX.open("GET", "json/low-resulution-images.json", true);
 
-	                        $jsonData = eval("(" + $objX.responseText + ")"); //take result as an JavaScript object
-	                        processJSON();
+            _objX.onreadystatechange = function () {
 
-	                    } else {
+                //if readyState is not 4 or or status not 200 then there is a problem that needs attending
+                if (_objX.readyState === 4) {
+                    if (_objX.status === 200) {
 
-	                        alert('HTTP error ' + $objX.status);
-	                    }
-	                }
-	            };
+                        _jsonData = eval("(" + _objX.responseText + ")"); //take result as an JavaScript object
+                        _processJSON();
 
-	            $objX.send();
+                    } else {
 
-	        } else {
+                        alert('HTTP error ' + _objX.status);
+                    }
+                }
+            };
 
-	            alert("You do not have AJAX implemented on your browser, sorry.");
-	        }
-	    } // end getJSON
+            _objX.send();
 
-	    function processJSON() {
+        } else {
 
-	        $bodyChildren = document.body.getElementsByTagName("object");
+            alert("You do not have AJAX implemented on your browser, sorry.");
+        }
+    } // end getJSON
 
-	        $x = 0;
+    function _processJSON() {
 
-	        for ($len = $bodyChildren.length; $x < $len; $x += 1) {
-	            // Look through all objects on the page
-	            $svgObject = $bodyChildren[$x];
+        _bodyChildren = document.body.getElementsByTagName("object");
 
-	            $newImg = document.createElement("img");
+        _x = 0;
 
-	            $result = $bodyChildren[$x].data.substr(0, $bodyChildren[$x].data.lastIndexOf('.'));
-	            // Removes the file extension from SVG url
-	            $result = $result.substring($result.lastIndexOf('/') + 1);
-	            // Removes everything before the last slash
-	            for ($key in $jsonData) {
-	                // loop through JSON object
-	                if ($jsonData.hasOwnProperty($key)) {
+        for (_len = _bodyChildren.length; _x < _len; _x += 1) {
+            // Look through all objects on the page
+            _svgObject = _bodyChildren[_x];
 
-	                    if ($result === $jsonData[$key].file.substr(0, $jsonData[$key].file.lastIndexOf('.'))) {
+            _newImg = document.createElement("img");
 
-	                        $newImg.src = "images/l/" + $jsonData[$key].file;
+            _result = _bodyChildren[_x].data.substr(0, _bodyChildren[_x].data.lastIndexOf('.'));
+            // Removes the file extension from SVG url
+            _result = _result.substring(_result.lastIndexOf('/') + 1);
+            // Removes everything before the last slash
+            for (_key in _jsonData) {
+                // loop through JSON object
+                if (_jsonData.hasOwnProperty(_key)) {
 
-	                    } // end if
-	                } // end if
-	            } // end for in loop
-	            // Apply width and height of the svg to the new img if that is set in svg object
-	            if ($svgObject.getAttribute("width") !== null) {
+                    if (_result === _jsonData[_key].file.substr(0, _jsonData[_key].file.lastIndexOf('.'))) {
 
-	                $newImg.width = $svgObject.getAttribute("width");
-	                $newImg.height = $svgObject.getAttribute("height");
+                        _newImg.src = "images/l/" + _jsonData[_key].file;
 
-	            }
+                    } // end if
+                } // end if
+            } // end for in loop
+            // Apply width and height of the svg to the new img if that is set in svg object
+            if (_svgObject.getAttribute("width") !== null) {
 
-	            // If object has id then use that attribute
-	            if ($svgObject.getAttribute("id") !== null) {
+                _newImg.width = _svgObject.getAttribute("width");
+                _newImg.height = _svgObject.getAttribute("height");
 
-	                $newImg.id = $svgObject.getAttribute("id");
+            }
 
-	            }
+            // If object has id then use that attribute
+            if (_svgObject.getAttribute("id") !== null) {
 
-	            // alt for image must be placed in title attribute
-	            if ($svgObject.getAttribute("title") !== null) {
+                _newImg.id = _svgObject.getAttribute("id");
 
-	                $newImg.alt = $svgObject.getAttribute("title");
+            }
 
-	            }
+            // alt for image must be placed in title attribute
+            if (_svgObject.getAttribute("title") !== null) {
 
-	            // apply classname if known
-	            if ($svgObject.getAttribute("class") || $svgObject.getAttribute("className") !== null) {
+                _newImg.alt = _svgObject.getAttribute("title");
 
-	                $newImg.className = $svgObject.getAttribute("class") || $svgObject.getAttribute("className");
+            }
 
-	            }
-				
-	            // declare parent of svg object
-	            $root = $svgObject.parentNode;
-	            $newParent = document.createElement('div');
+            // apply classname if known
+            if (_svgObject.getAttribute("class") || _svgObject.getAttribute("className") !== null) {
 
-	            // Insert new node as a child or the root directly before the svg object
-	            $root.insertBefore($newParent, $svgObject);
+                _newImg.className = _svgObject.getAttribute("class") || _svgObject.getAttribute("className");
 
-	            // Append svg object to the new parent
-	            $newParent.appendChild($svgObject);
+            }
 
-	            // Append new image to the parent node
-	            $svgObject.parentNode.appendChild($newImg);
+            // declare parent of svg object
+            _root = _svgObject.parentNode;
+            _newParent = document.createElement('div');
 
-	            // Remove the svg object
-	            //$svgObject.parentNode.removeChild($svgObject);
-	            // ouch, removing the node has given me headaches 
-	            // so for now we will just set it to display none
-	            $svgObject.className += " hidden";
+            // Insert new node as a child or the root directly before the svg object
+            _root.insertBefore(_newParent, _svgObject);
 
-	        } // end for loop
-	    } // end processJSON
-		
-	    return {
+            // Append svg object to the new parent
+            _newParent.appendChild(_svgObject);
 
-	        init: function () {
-	            // public method
-	            // SVG object detection
-	            // don't forget to change for intenet explorer
-	            if (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")) {
+            // Append new image to the parent node
+            _svgObject.parentNode.appendChild(_newImg);
 
-	                getJSON();
+            // Remove the svg object
+            //$svgObject.parentNode.removeChild($svgObject);
+            // ouch, removing the node has given me headaches 
+            // so for now we will just set it to display none
+            _svgObject.className += " hidden";
 
-	            }
-	        }
-	    }; // end return
-	})(); // end SVG.ImgReplace object
-	
+        } // end for loop
+    } // end processJSON
+    return {
+
+        init: function () {
+            // public method
+            // SVG object detection
+            // don't forget to change for intenet explorer
+            if (!document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1")) {
+
+                _getJSON();
+
+            }
+        }
+    }; // end return
+})(); // end SVG.ImgReplace object
