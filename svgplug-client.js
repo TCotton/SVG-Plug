@@ -64,7 +64,7 @@ SVG.ImgReplace = (function () {
                     newImg.width = svgObject.getAttribute("width");
                     newImg.height = svgObject.getAttribute("height");
                 }
-
+				
                 // If object has id then use that attribute
                 if (svgObject.getAttribute("id") !== null) {
                     newImg.id = svgObject.getAttribute("id");
