@@ -52,9 +52,7 @@ SVG.ImgReplace = (function () {
                     if (jsonData.hasOwnProperty(key)) {
 
                         if (result === jsonData[key].file.substr(0, jsonData[key].file.lastIndexOf('.'))) {
-
                             newImg.src = "images/l/" + jsonData[key].file;
-
                         } // end if
                     } // end if
                 } // end for in loop
